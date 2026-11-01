@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=KDropover
+GenericName=Estantería Flotante de Archivos y Quick Look AI
+Comment=Estantería flotante estilo macOS Dropover + Quick Look con resumen IA para KDE Plasma 6 Wayland
+Exec=kdropover %F
+Icon=folder-stash
+Type=Application
+Categories=Utility;FileTools;KDE;Qt;
+StartupNotify=false

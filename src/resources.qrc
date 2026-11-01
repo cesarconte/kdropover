@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/org/cesar/kdropover">
+        <file>qml/main.qml</file>
+    </qresource>
+</RCC>
