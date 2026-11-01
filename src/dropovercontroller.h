@@ -38,7 +38,6 @@ public:
     Q_INVOKABLE void addUrls(const QList<QUrl> &urls);
     Q_INVOKABLE void addFilePath(const QString &path);
     Q_INVOKABLE void openNativeFileDialog();
-    Q_INVOKABLE void openDolphinWindow();
     Q_INVOKABLE void removeAt(int index);
     Q_INVOKABLE void clearShelf();
     Q_INVOKABLE void copyAllPathsToClipboard();

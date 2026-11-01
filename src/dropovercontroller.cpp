@@ -135,17 +135,6 @@ void DropoverController::openNativeFileDialog()
     }
 }
 
-void DropoverController::openDolphinWindow()
-{
-    const QString dolphinBin = QStandardPaths::findExecutable(QStringLiteral("dolphin"));
-    if (!dolphinBin.isEmpty()) {
-        QProcess::startDetached(dolphinBin, {QDir::homePath()});
-        setStatus(QStringLiteral("Dolphin abierto — arrastra archivos a la estantería"));
-    } else {
-        QDesktopServices::openUrl(QUrl::fromLocalFile(QDir::homePath()));
-    }
-}
-
 void DropoverController::addFilePath(const QString &path)
 {
     QFileInfo fi(path);

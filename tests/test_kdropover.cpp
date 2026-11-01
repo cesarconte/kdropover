@@ -42,10 +42,9 @@ private Q_SLOTS:
 
         QVERIFY(ctrl.quickLookPreview().contains(QStringLiteral("Quick Look AI")));
 
-        // Verify native KDE file dialog and Dolphin invokables are exposed to QML
+        // Verify native KDE file dialog invokable is exposed to QML
         const QMetaObject *mo = ctrl.metaObject();
         QVERIFY(mo->indexOfMethod("openNativeFileDialog()") >= 0);
-        QVERIFY(mo->indexOfMethod("openDolphinWindow()") >= 0);
 
         ctrl.removeAt(0);
         QCOMPARE(ctrl.count(), 0);

@@ -68,7 +68,7 @@ Window {
                 }
 
                 QQC2.Label {
-                    text: "KDropover · Estantería + Quick Look AI"
+                    text: "KDropover"
                     font.bold: true
                     color: "#ffffff"
                     Layout.fillWidth: true
@@ -79,14 +79,7 @@ Window {
                     icon.name: "list-add-symbolic"
                     onClicked: Dropover.openNativeFileDialog()
                     QQC2.ToolTip.visible: hovered
-                    QQC2.ToolTip.text: "Añadir archivos (Selector nativo de KDE / Dolphin)"
-                }
-
-                QQC2.ToolButton {
-                    icon.name: "system-file-manager-symbolic"
-                    onClicked: Dropover.openDolphinWindow()
-                    QQC2.ToolTip.visible: hovered
-                    QQC2.ToolTip.text: "Abrir Dolphin para arrastrar archivos"
+                    QQC2.ToolTip.text: "Añadir archivos"
                 }
 
                 QQC2.ToolButton {
@@ -122,6 +115,13 @@ Window {
                 border.width: 1
                 border.color: Qt.rgba(1.0, 1.0, 1.0, 0.12)
 
+                MouseArea {
+                    anchors.fill: parent
+                    enabled: Dropover.count === 0
+                    cursorShape: Dropover.count === 0 ? Qt.PointingHandCursor : Qt.ArrowCursor
+                    onClicked: Dropover.openNativeFileDialog()
+                }
+
                 ColumnLayout {
                     anchors.centerIn: parent
                     visible: Dropover.count === 0
@@ -136,7 +136,7 @@ Window {
                     }
 
                     QQC2.Label {
-                        text: "Suelta aquí archivos desde Dolphin o el navegador"
+                        text: "Suelta aquí archivos o haz clic para añadirlos"
                         color: "#b0bec5"
                         font.pixelSize: Kirigami.Theme.smallFont.pixelSize
                     }
