@@ -10,6 +10,7 @@
 #include <QDesktopServices>
 #include <QDir>
 #include <QFile>
+#include <QFileDialog>
 #include <QFileInfo>
 #include <QGuiApplication>
 #include <QJsonArray>
@@ -115,6 +116,33 @@ void DropoverController::addUrls(const QList<QUrl> &urls)
         if (u.isLocalFile()) {
             addFilePath(u.toLocalFile());
         }
+    }
+}
+
+void DropoverController::openNativeFileDialog()
+{
+    // Al usar QApplication en KDE Plasma 6, QFileDialog delega automáticamente
+    // en plasma-integration / KIOFileWidgets (o xdg-desktop-portal-kde), mostrando
+    // exactamente el mismo selector nativo estilo Dolphin que usan los navegadores.
+    const QStringList selectedPaths = QFileDialog::getOpenFileNames(
+        nullptr,
+        QStringLiteral("Añadir archivos a KDropover"),
+        QDir::homePath(),
+        QStringLiteral("Todos los archivos (*)"));
+
+    for (const QString &path : selectedPaths) {
+        addFilePath(path);
+    }
+}
+
+void DropoverController::openDolphinWindow()
+{
+    const QString dolphinBin = QStandardPaths::findExecutable(QStringLiteral("dolphin"));
+    if (!dolphinBin.isEmpty()) {
+        QProcess::startDetached(dolphinBin, {QDir::homePath()});
+        setStatus(QStringLiteral("Dolphin abierto — arrastra archivos a la estantería"));
+    } else {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(QDir::homePath()));
     }
 }
 

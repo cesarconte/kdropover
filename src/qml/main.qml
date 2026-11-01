@@ -7,7 +7,6 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Controls as QQC2
-import QtQuick.Dialogs as QtDialogs
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 
@@ -18,15 +17,6 @@ Window {
     visible: true
     color: "transparent"
     flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
-
-    QtDialogs.FileDialog {
-        id: addFilesDialog
-        title: "Añadir archivos a KDropover"
-        fileMode: QtDialogs.FileDialog.OpenFiles
-        onAccepted: {
-            Dropover.addUrls(selectedFiles);
-        }
-    }
 
     Rectangle {
         id: glassCard
@@ -87,9 +77,16 @@ Window {
 
                 QQC2.ToolButton {
                     icon.name: "list-add-symbolic"
-                    onClicked: addFilesDialog.open()
+                    onClicked: Dropover.openNativeFileDialog()
                     QQC2.ToolTip.visible: hovered
-                    QQC2.ToolTip.text: "Añadir archivos"
+                    QQC2.ToolTip.text: "Añadir archivos (Selector nativo de KDE / Dolphin)"
+                }
+
+                QQC2.ToolButton {
+                    icon.name: "system-file-manager-symbolic"
+                    onClicked: Dropover.openDolphinWindow()
+                    QQC2.ToolTip.visible: hovered
+                    QQC2.ToolTip.text: "Abrir Dolphin para arrastrar archivos"
                 }
 
                 QQC2.ToolButton {

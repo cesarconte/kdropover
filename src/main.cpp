@@ -7,7 +7,7 @@
 
 #include <LayerShellQt/Window>
 
-#include <QGuiApplication>
+#include <QApplication>
 #include <QMargins>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -15,7 +15,7 @@
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     app.setApplicationName(QStringLiteral("kdropover"));
     app.setApplicationDisplayName(QStringLiteral("KDropover"));
     app.setOrganizationDomain(QStringLiteral("cesar.org"));

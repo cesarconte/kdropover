@@ -8,6 +8,7 @@ target_include_directories(kdropover_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(kdropover_core PUBLIC
     Qt6::Core
     Qt6::Gui
+    Qt6::Widgets
     Qt6::Network
 )
 
