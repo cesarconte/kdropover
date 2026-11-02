@@ -5,10 +5,7 @@
 
 #include "dropovercontroller.h"
 
-#include <LayerShellQt/Window>
-
 #include <QApplication>
-#include <QMargins>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickWindow>
@@ -34,17 +31,6 @@ int main(int argc, char *argv[])
 
     if (engine.rootObjects().isEmpty()) {
         return -1;
-    }
-
-    if (auto *win = qobject_cast<QQuickWindow *>(engine.rootObjects().first())) {
-        if (auto *layerWin = LayerShellQt::Window::get(win)) {
-            layerWin->setLayer(LayerShellQt::Window::LayerTop);
-            layerWin->setAnchors(LayerShellQt::Window::AnchorRight);
-            layerWin->setMargins(QMargins(0, 0, 18, 0));
-            layerWin->setExclusiveZone(0);
-            layerWin->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityOnDemand);
-            layerWin->setScope(QStringLiteral("kdropover"));
-        }
     }
 
     return app.exec();

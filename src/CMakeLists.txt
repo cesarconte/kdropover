@@ -24,7 +24,6 @@ target_link_libraries(kdropover PRIVATE
     Qt6::QuickControls2
     KF6::CoreAddons
     KF6::I18n
-    LayerShellQt::Interface
 )
 
 install(TARGETS kdropover DESTINATION ${KDE_INSTALL_BINDIR})
