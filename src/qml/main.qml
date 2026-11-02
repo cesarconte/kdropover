@@ -23,21 +23,11 @@ Window {
         anchors.fill: parent
         anchors.margins: Kirigami.Units.smallSpacing
         radius: Kirigami.Units.largeSpacing
-        color: Qt.rgba(0.08, 0.09, 0.13, 0.88)
+        color: Kirigami.Theme.backgroundColor
         border.width: dropArea.containsDrag ? 2 : 1
-        border.color: dropArea.containsDrag ? "#00e5ff" : Qt.rgba(1.0, 1.0, 1.0, 0.22)
-
-        // Liquid Glass Specular Sheen
-        Rectangle {
-            anchors.fill: parent
-            anchors.margins: 1
-            radius: Math.max(0, glassCard.radius - 1)
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: Qt.rgba(1.0, 1.0, 1.0, 0.14) }
-                GradientStop { position: 0.35; color: Qt.rgba(1.0, 1.0, 1.0, 0.02) }
-                GradientStop { position: 1.0; color: Qt.rgba(0.0, 0.0, 0.0, 0.14) }
-            }
-        }
+        border.color: dropArea.containsDrag
+            ? Kirigami.Theme.highlightColor
+            : Kirigami.ColorUtils.linearInterpolation(Kirigami.Theme.backgroundColor, Kirigami.Theme.textColor, 0.18)
 
         DropArea {
             id: dropArea
