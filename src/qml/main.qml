@@ -10,83 +10,67 @@ import QtQuick.Controls as QQC2
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 
-Window {
+Kirigami.ApplicationWindow {
     id: rootWindow
     width: 440
     height: 520
     visible: true
-    color: "transparent"
-    flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+    title: i18n("KDropover — Estantería de Archivos")
 
-    Rectangle {
-        id: glassCard
+    DropArea {
+        id: dropArea
         anchors.fill: parent
-        anchors.margins: Kirigami.Units.smallSpacing
-        radius: Kirigami.Units.largeSpacing
-        color: Kirigami.Theme.backgroundColor
-        border.width: dropArea.containsDrag ? 2 : 1
-        border.color: dropArea.containsDrag
-            ? Kirigami.Theme.highlightColor
-            : Kirigami.ColorUtils.linearInterpolation(Kirigami.Theme.backgroundColor, Kirigami.Theme.textColor, 0.18)
-
-        DropArea {
-            id: dropArea
-            anchors.fill: parent
-            onDropped: drop => {
-                if (drop.hasUrls) {
-                    Dropover.addUrls(drop.urls);
-                    drop.acceptProposedAction();
-                }
+        onDropped: drop => {
+            if (drop.hasUrls) {
+                Dropover.addUrls(drop.urls);
+                drop.acceptProposedAction();
             }
         }
+    }
 
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.margins: Kirigami.Units.mediumSpacing
+    ColumnLayout {
+        anchors.fill: parent
+        anchors.margins: Kirigami.Units.mediumSpacing
+        spacing: Kirigami.Units.smallSpacing
+
+        // Header Toolbar
+        RowLayout {
+            Layout.fillWidth: true
             spacing: Kirigami.Units.smallSpacing
 
-            // Header
-            RowLayout {
-                Layout.fillWidth: true
-                spacing: Kirigami.Units.smallSpacing
-
-                Kirigami.Icon {
-                    source: "folder-stash-symbolic"
-                    implicitWidth: Kirigami.Units.iconSizes.smallMedium
-                    implicitHeight: Kirigami.Units.iconSizes.smallMedium
-                    color: Kirigami.Theme.highlightColor
-                }
-
-                QQC2.Label {
-                    text: "KDropover"
-                    font.bold: true
-                    color: Kirigami.Theme.textColor
-                    Layout.fillWidth: true
-                    elide: Text.ElideRight
-                }
-
-                QQC2.ToolButton {
-                    icon.name: "list-add-symbolic"
-                    onClicked: Dropover.openNativeFileDialog()
-                    QQC2.ToolTip.visible: hovered
-                    QQC2.ToolTip.text: "Añadir archivos"
-                }
-
-                QQC2.ToolButton {
-                    icon.name: "edit-clear-all-symbolic"
-                    enabled: Dropover.count > 0
-                    onClicked: Dropover.clearShelf()
-                    QQC2.ToolTip.visible: hovered
-                    QQC2.ToolTip.text: "Vaciar estantería"
-                }
-
-                QQC2.ToolButton {
-                    icon.name: "window-close-symbolic"
-                    onClicked: Qt.quit()
-                    QQC2.ToolTip.visible: hovered
-                    QQC2.ToolTip.text: "Cerrar KDropover"
-                }
+            Kirigami.Icon {
+                source: "folder-stash-symbolic"
+                implicitWidth: Kirigami.Units.iconSizes.smallMedium
+                implicitHeight: Kirigami.Units.iconSizes.smallMedium
+                color: Kirigami.Theme.highlightColor
             }
+
+            QQC2.Label {
+                text: "Estantería temporal de archivos"
+                color: Kirigami.Theme.textColor
+                Layout.fillWidth: true
+                elide: Text.ElideRight
+            }
+
+            QQC2.ToolButton {
+                icon.name: "list-add-symbolic"
+                text: "Añadir"
+                display: QQC2.AbstractButton.TextBesideIcon
+                onClicked: Dropover.openNativeFileDialog()
+                QQC2.ToolTip.visible: hovered
+                QQC2.ToolTip.text: "Añadir archivos"
+            }
+
+            QQC2.ToolButton {
+                icon.name: "edit-clear-all-symbolic"
+                text: "Vaciar"
+                display: QQC2.AbstractButton.TextBesideIcon
+                enabled: Dropover.count > 0
+                onClicked: Dropover.clearShelf()
+                QQC2.ToolTip.visible: hovered
+                QQC2.ToolTip.text: "Vaciar estantería"
+            }
+        }
 
             QQC2.Label {
                 Layout.fillWidth: true
@@ -281,5 +265,4 @@ Window {
                 }
             }
         }
-    }
 }
