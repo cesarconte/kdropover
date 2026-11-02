@@ -54,13 +54,13 @@ Window {
                     source: "folder-stash-symbolic"
                     implicitWidth: Kirigami.Units.iconSizes.smallMedium
                     implicitHeight: Kirigami.Units.iconSizes.smallMedium
-                    color: "#00e5ff"
+                    color: Kirigami.Theme.highlightColor
                 }
 
                 QQC2.Label {
                     text: "KDropover"
                     font.bold: true
-                    color: "#ffffff"
+                    color: Kirigami.Theme.textColor
                     Layout.fillWidth: true
                     elide: Text.ElideRight
                 }
@@ -91,7 +91,7 @@ Window {
             QQC2.Label {
                 Layout.fillWidth: true
                 text: Dropover.statusMessage
-                color: "#90a4ae"
+                color: Kirigami.Theme.disabledTextColor
                 font.pixelSize: Kirigami.Theme.smallFont.pixelSize
                 elide: Text.ElideRight
             }
@@ -101,9 +101,9 @@ Window {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 175
                 radius: Kirigami.Units.mediumSpacing
-                color: Qt.rgba(0.0, 0.0, 0.0, 0.28)
+                color: Kirigami.Theme.alternateBackgroundColor
                 border.width: 1
-                border.color: Qt.rgba(1.0, 1.0, 1.0, 0.12)
+                border.color: Kirigami.ColorUtils.linearInterpolation(Kirigami.Theme.backgroundColor, Kirigami.Theme.textColor, 0.15)
 
                 MouseArea {
                     anchors.fill: parent
@@ -122,12 +122,12 @@ Window {
                         source: "document-import-symbolic"
                         implicitWidth: Kirigami.Units.iconSizes.large
                         implicitHeight: Kirigami.Units.iconSizes.large
-                        color: "#78909c"
+                        color: Kirigami.Theme.disabledTextColor
                     }
 
                     QQC2.Label {
                         text: "Suelta aquí archivos o haz clic para añadirlos"
-                        color: "#b0bec5"
+                        color: Kirigami.Theme.disabledTextColor
                         font.pixelSize: Kirigami.Theme.smallFont.pixelSize
                     }
                 }
@@ -150,7 +150,9 @@ Window {
                             width: ListView.view.width
                             height: 36
                             radius: 6
-                            color: Qt.rgba(1.0, 1.0, 1.0, 0.07)
+                            color: Kirigami.Theme.backgroundColor
+                            border.width: 1
+                            border.color: Kirigami.ColorUtils.linearInterpolation(Kirigami.Theme.backgroundColor, Kirigami.Theme.textColor, 0.10)
 
                             RowLayout {
                                 anchors.fill: parent
@@ -167,7 +169,7 @@ Window {
                                 QQC2.Label {
                                     Layout.fillWidth: true
                                     text: fileRow.modelData.name + " (" + fileRow.modelData.sizeText + ")"
-                                    color: "#ffffff"
+                                    color: Kirigami.Theme.textColor
                                     elide: Text.ElideMiddle
                                     font.pixelSize: Kirigami.Theme.smallFont.pixelSize
                                 }
@@ -238,9 +240,9 @@ Window {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 radius: Kirigami.Units.mediumSpacing
-                color: Qt.rgba(0.0, 0.0, 0.0, 0.34)
+                color: Kirigami.Theme.alternateBackgroundColor
                 border.width: 1
-                border.color: Qt.rgba(1.0, 1.0, 1.0, 0.12)
+                border.color: Kirigami.ColorUtils.linearInterpolation(Kirigami.Theme.backgroundColor, Kirigami.Theme.textColor, 0.15)
 
                 ColumnLayout {
                     anchors.fill: parent
@@ -250,7 +252,7 @@ Window {
                     QQC2.Label {
                         Layout.fillWidth: true
                         font.bold: true
-                        color: "#80d8ff"
+                        color: Kirigami.Theme.highlightColor
                         font.pixelSize: Kirigami.Theme.smallFont.pixelSize
                         elide: Text.ElideRight
                         text: Dropover.quickLookTitle.length > 0
@@ -268,7 +270,7 @@ Window {
                             readOnly: true
                             selectByMouse: true
                             wrapMode: TextEdit.Wrap
-                            color: "#eceff1"
+                            color: Kirigami.Theme.textColor
                             font.family: Dropover.aiSummary.length > 0 ? Kirigami.Theme.defaultFont.family : "monospace"
                             font.pixelSize: Kirigami.Theme.smallFont.pixelSize
                             text: Dropover.aiSummary.length > 0
