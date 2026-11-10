@@ -1,268 +1,282 @@
 /*
-    SPDX-FileCopyrightText: 2026 Cesar
-    SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ * SPDX-FileCopyrightText: 2026 Cesar
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
 pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
-import org.kde.kirigami as Kirigami
+import CachyOS.UI
 
-Kirigami.ApplicationWindow {
+CachyWindow {
     id: rootWindow
-    width: 440
-    height: 520
-    visible: true
-    title: i18n("KDropover — Estantería de Archivos")
 
-    DropArea {
-        id: dropArea
-        anchors.fill: parent
-        onDropped: drop => {
-            if (drop.hasUrls) {
-                Dropover.addUrls(drop.urls);
-                drop.acceptProposedAction();
-            }
-        }
-    }
+    width: 480
+    height: 600
+    title: "KDropover — Estantería de Archivos"
+    showTrafficLights: true
 
-    ColumnLayout {
-        anchors.fill: parent
-        anchors.margins: Kirigami.Units.mediumSpacing
-        spacing: Kirigami.Units.smallSpacing
+    contentData: [
+        DropArea {
+            id: dropArea
+            anchors.fill: parent
 
-        // Header Toolbar
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: Kirigami.Units.smallSpacing
-
-            Kirigami.Icon {
-                source: "folder-stash-symbolic"
-                implicitWidth: Kirigami.Units.iconSizes.smallMedium
-                implicitHeight: Kirigami.Units.iconSizes.smallMedium
-                color: Kirigami.Theme.highlightColor
-            }
-
-            QQC2.Label {
-                text: "Estantería temporal de archivos"
-                color: Kirigami.Theme.textColor
-                Layout.fillWidth: true
-                elide: Text.ElideRight
-            }
-
-            QQC2.ToolButton {
-                icon.name: "list-add-symbolic"
-                text: "Añadir"
-                display: QQC2.AbstractButton.TextBesideIcon
-                onClicked: Dropover.openNativeFileDialog()
-                QQC2.ToolTip.visible: hovered
-                QQC2.ToolTip.text: "Añadir archivos"
-            }
-
-            QQC2.ToolButton {
-                icon.name: "edit-clear-all-symbolic"
-                text: "Vaciar"
-                display: QQC2.AbstractButton.TextBesideIcon
-                enabled: Dropover.count > 0
-                onClicked: Dropover.clearShelf()
-                QQC2.ToolTip.visible: hovered
-                QQC2.ToolTip.text: "Vaciar estantería"
-            }
-        }
-
-            QQC2.Label {
-                Layout.fillWidth: true
-                text: Dropover.statusMessage
-                color: Kirigami.Theme.disabledTextColor
-                font.pixelSize: Kirigami.Theme.smallFont.pixelSize
-                elide: Text.ElideRight
-            }
-
-            // Drop Zone / Shelf List
-            Rectangle {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 175
-                radius: Kirigami.Units.mediumSpacing
-                color: Kirigami.Theme.alternateBackgroundColor
-                border.width: 1
-                border.color: Kirigami.ColorUtils.linearInterpolation(Kirigami.Theme.backgroundColor, Kirigami.Theme.textColor, 0.15)
-
-                MouseArea {
-                    anchors.fill: parent
-                    enabled: Dropover.count === 0
-                    cursorShape: Dropover.count === 0 ? Qt.PointingHandCursor : Qt.ArrowCursor
-                    onClicked: Dropover.openNativeFileDialog()
+            onDropped: drop => {
+                if (drop.hasUrls) {
+                    Dropover.addUrls(drop.urls);
+                    drop.acceptProposedAction();
                 }
+            }
 
-                ColumnLayout {
-                    anchors.centerIn: parent
-                    visible: Dropover.count === 0
-                    spacing: Kirigami.Units.smallSpacing
+            ColumnLayout {
+                anchors.fill: parent
+                anchors.margins: 18
+                spacing: 14
 
-                    Kirigami.Icon {
-                        Layout.alignment: Qt.AlignHCenter
-                        source: "document-import-symbolic"
-                        implicitWidth: Kirigami.Units.iconSizes.large
-                        implicitHeight: Kirigami.Units.iconSizes.large
-                        color: Kirigami.Theme.disabledTextColor
+                // Header Info Bar
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 10
+
+                    Text {
+                        text: "📦"
+                        font.pixelSize: 18
                     }
 
-                    QQC2.Label {
-                        text: "Suelta aquí archivos o haz clic para añadirlos"
-                        color: Kirigami.Theme.disabledTextColor
-                        font.pixelSize: Kirigami.Theme.smallFont.pixelSize
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        spacing: 2
+
+                        Text {
+                            text: "Estantería Temporal"
+                            font.pixelSize: 15
+                            font.bold: true
+                            color: CachyTheme.textPrimary
+                        }
+
+                        Text {
+                            text: Dropover.statusMessage.length > 0
+                                ? Dropover.statusMessage
+                                : "Arrastra y mantén archivos a mano"
+                            font.pixelSize: 11
+                            color: CachyTheme.textSecondary
+                            elide: Text.ElideRight
+                        }
+                    }
+
+                    CachyButton {
+                        text: "Añadir"
+                        onClicked: Dropover.openNativeFileDialog()
+                    }
+
+                    CachyButton {
+                        text: "Vaciar"
+                        destructive: true
+                        enabled: Dropover.count > 0
+                        onClicked: Dropover.clearShelf()
                     }
                 }
 
-                QQC2.ScrollView {
-                    anchors.fill: parent
-                    anchors.margins: Kirigami.Units.smallSpacing
-                    visible: Dropover.count > 0
-                    clip: true
+                // Drop Zone / Shelf List (CachyCard)
+                CachyCard {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 200
 
-                    ListView {
+                    contentItem: Item {
                         anchors.fill: parent
-                        spacing: 4
-                        model: Dropover.shelfFiles
 
-                        delegate: Rectangle {
-                            id: fileRow
-                            required property var modelData
-                            required property int index
-                            width: ListView.view.width
-                            height: 36
-                            radius: 6
-                            color: Kirigami.Theme.backgroundColor
-                            border.width: 1
-                            border.color: Kirigami.ColorUtils.linearInterpolation(Kirigami.Theme.backgroundColor, Kirigami.Theme.textColor, 0.10)
+                        // Empty State View
+                        ColumnLayout {
+                            anchors.centerIn: parent
+                            visible: Dropover.count === 0
+                            spacing: 8
 
-                            RowLayout {
+                            Text {
+                                text: "📥"
+                                font.pixelSize: 32
+                                Layout.alignment: Qt.AlignHCenter
+                            }
+
+                            Text {
+                                text: "Suelta aquí archivos para la estantería"
+                                font.pixelSize: 13
+                                font.weight: Font.DemiBold
+                                color: CachyTheme.textPrimary
+                                Layout.alignment: Qt.AlignHCenter
+                            }
+
+                            Text {
+                                text: "o haz clic aquí para seleccionar"
+                                font.pixelSize: 11
+                                color: CachyTheme.textSecondary
+                                Layout.alignment: Qt.AlignHCenter
+                            }
+
+                            MouseArea {
                                 anchors.fill: parent
-                                anchors.leftMargin: 8
-                                anchors.rightMargin: 8
-                                spacing: 6
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: Dropover.openNativeFileDialog()
+                            }
+                        }
 
-                                Kirigami.Icon {
-                                    source: fileRow.modelData.iconName
-                                    implicitWidth: 18
-                                    implicitHeight: 18
-                                }
+                        // Files List View
+                        ListView {
+                            id: shelfListView
+                            anchors.fill: parent
+                            spacing: 6
+                            visible: Dropover.count > 0
+                            clip: true
+                            model: Dropover.shelfFiles
 
-                                QQC2.Label {
-                                    Layout.fillWidth: true
-                                    text: fileRow.modelData.name + " (" + fileRow.modelData.sizeText + ")"
-                                    color: Kirigami.Theme.textColor
-                                    elide: Text.ElideMiddle
-                                    font.pixelSize: Kirigami.Theme.smallFont.pixelSize
-                                }
+                            delegate: Rectangle {
+                                id: fileRow
+                                required property var modelData
+                                required property int index
 
-                                QQC2.ToolButton {
-                                    icon.name: "view-preview-symbolic"
-                                    onClicked: Dropover.inspectFileQuickLook(fileRow.modelData.path)
-                                    QQC2.ToolTip.visible: hovered
-                                    QQC2.ToolTip.text: "Quick Look (Vista rápida)"
-                                }
+                                width: shelfListView.width
+                                height: 38
+                                radius: CachyTheme.radiusSmall
+                                color: CachyTheme.isDark ? Qt.rgba(1, 1, 1, 0.06) : Qt.rgba(0, 0, 0, 0.04)
+                                border.width: 1
+                                border.color: CachyTheme.specularBorder
 
-                                QQC2.ToolButton {
-                                    icon.name: "sparkles-symbolic"
-                                    onClicked: Dropover.summarizeFileWithAi(fileRow.modelData.path)
-                                    QQC2.ToolTip.visible: hovered
-                                    QQC2.ToolTip.text: "Resumir con IA (Ollama)"
-                                }
+                                RowLayout {
+                                    anchors.fill: parent
+                                    anchors.leftMargin: 10
+                                    anchors.rightMargin: 10
+                                    spacing: 8
 
-                                QQC2.ToolButton {
-                                    icon.name: "document-open-symbolic"
-                                    onClicked: Dropover.openFileExternally(fileRow.modelData.path)
-                                    QQC2.ToolTip.visible: hovered
-                                    QQC2.ToolTip.text: "Abrir archivo"
-                                }
+                                    Text {
+                                        text: "📄"
+                                        font.pixelSize: 15
+                                    }
 
-                                QQC2.ToolButton {
-                                    icon.name: "list-remove-symbolic"
-                                    onClicked: Dropover.removeAt(fileRow.index)
+                                    Text {
+                                        Layout.fillWidth: true
+                                        text: fileRow.modelData.name + " (" + fileRow.modelData.sizeText + ")"
+                                        color: CachyTheme.textPrimary
+                                        elide: Text.ElideMiddle
+                                        font.pixelSize: 12
+                                    }
+
+                                    // Quick Look preview
+                                    CachyButton {
+                                        text: "👁️"
+                                        flat: true
+                                        implicitWidth: 32
+                                        implicitHeight: 26
+                                        onClicked: Dropover.inspectFileQuickLook(fileRow.modelData.path)
+                                    }
+
+                                    // AI Summarize
+                                    CachyButton {
+                                        text: "✨"
+                                        flat: true
+                                        implicitWidth: 32
+                                        implicitHeight: 26
+                                        onClicked: Dropover.summarizeFileWithAi(fileRow.modelData.path)
+                                    }
+
+                                    // Open file
+                                    CachyButton {
+                                        text: "↗"
+                                        flat: true
+                                        implicitWidth: 32
+                                        implicitHeight: 26
+                                        onClicked: Dropover.openFileExternally(fileRow.modelData.path)
+                                    }
+
+                                    // Delete from shelf
+                                    CachyButton {
+                                        text: "✕"
+                                        flat: true
+                                        destructive: true
+                                        implicitWidth: 26
+                                        implicitHeight: 26
+                                        onClicked: Dropover.removeAt(fileRow.index)
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            // Batch Shelf Actions
-            RowLayout {
-                Layout.fillWidth: true
-                spacing: Kirigami.Units.smallSpacing
-
-                QQC2.Button {
+                // Batch Actions Row
+                RowLayout {
                     Layout.fillWidth: true
-                    icon.name: "edit-copy-symbolic"
-                    text: "Copiar todos"
-                    enabled: Dropover.count > 0
-                    onClicked: Dropover.copyAllPathsToClipboard()
-                }
+                    spacing: 10
 
-                QQC2.Button {
-                    Layout.fillWidth: true
-                    icon.name: "package-x-generic-symbolic"
-                    text: "Crear ZIP"
-                    enabled: Dropover.count > 0
-                    onClicked: Dropover.createZipInDownloads()
-                }
-
-                QQC2.Button {
-                    Layout.fillWidth: true
-                    icon.name: "folder-bookmark-symbolic"
-                    text: "Enviar a Kiri RAG"
-                    enabled: Dropover.count > 0
-                    onClicked: Dropover.exportShelfToKiriKnowledge()
-                }
-            }
-
-            // Quick Look & AI Executive Summary Panel
-            Rectangle {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                radius: Kirigami.Units.mediumSpacing
-                color: Kirigami.Theme.alternateBackgroundColor
-                border.width: 1
-                border.color: Kirigami.ColorUtils.linearInterpolation(Kirigami.Theme.backgroundColor, Kirigami.Theme.textColor, 0.15)
-
-                ColumnLayout {
-                    anchors.fill: parent
-                    anchors.margins: Kirigami.Units.smallSpacing
-                    spacing: 4
-
-                    QQC2.Label {
+                    CachyButton {
                         Layout.fillWidth: true
-                        font.bold: true
-                        color: Kirigami.Theme.highlightColor
-                        font.pixelSize: Kirigami.Theme.smallFont.pixelSize
-                        elide: Text.ElideRight
-                        text: Dropover.quickLookTitle.length > 0
-                            ? ("👁️ Quick Look: " + Dropover.quickLookTitle)
-                            : "👁️ Quick Look + AI Summary (selecciona un archivo)"
+                        text: "Copiar todos"
+                        enabled: Dropover.count > 0
+                        onClicked: Dropover.copyAllPathsToClipboard()
                     }
 
-                    QQC2.ScrollView {
+                    CachyButton {
                         Layout.fillWidth: true
-                        Layout.fillHeight: true
-                        clip: true
+                        text: "Crear ZIP"
+                        primary: true
+                        enabled: Dropover.count > 0
+                        onClicked: Dropover.createZipInDownloads()
+                    }
 
-                        TextEdit {
-                            width: parent.width
-                            readOnly: true
-                            selectByMouse: true
-                            wrapMode: TextEdit.Wrap
-                            color: Kirigami.Theme.textColor
-                            font.family: Dropover.aiSummary.length > 0 ? Kirigami.Theme.defaultFont.family : "monospace"
-                            font.pixelSize: Kirigami.Theme.smallFont.pixelSize
-                            text: Dropover.aiSummary.length > 0
-                                ? ("✨ RESUMEN EJECUTIVO IA:\n" + Dropover.aiSummary + "\n\n─── VISTA PREVIA ───\n" + Dropover.quickLookPreview)
-                                : Dropover.quickLookPreview
+                    CachyButton {
+                        Layout.fillWidth: true
+                        text: "Enviar a Kity"
+                        enabled: Dropover.count > 0
+                        onClicked: Dropover.exportShelfToKiriKnowledge()
+                    }
+                }
+
+                // Quick Look & AI Summary Card
+                CachyCard {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    contentItem: ColumnLayout {
+                        spacing: 8
+
+                        Text {
+                            Layout.fillWidth: true
+                            text: Dropover.quickLookTitle.length > 0
+                                ? ("👁️ " + Dropover.quickLookTitle)
+                                : "👁️ Vista Previa & Resumen IA (Selecciona un archivo)"
+                            font.pixelSize: 12
+                            font.weight: Font.DemiBold
+                            color: CachyTheme.accentColor
+                            elide: Text.ElideRight
+                        }
+
+                        CachyDivider {
+                            Layout.fillWidth: true
+                        }
+
+                        Flickable {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            clip: true
+                            contentWidth: width
+                            contentHeight: previewText.implicitHeight
+
+                            TextEdit {
+                                id: previewText
+                                width: parent.width
+                                readOnly: true
+                                selectByMouse: true
+                                wrapMode: TextEdit.Wrap
+                                color: CachyTheme.textPrimary
+                                font.pixelSize: 12
+                                text: Dropover.aiSummary.length > 0
+                                    ? ("✨ RESUMEN IA:\n" + Dropover.aiSummary + "\n\n─── VISTA PREVIA ───\n" + Dropover.quickLookPreview)
+                                    : (Dropover.quickLookPreview.length > 0 ? Dropover.quickLookPreview : "Arrastra archivos a la estantería para previsualizarlos o generar resúmenes con IA.")
+                            }
                         }
                     }
                 }
             }
         }
+    ]
 }

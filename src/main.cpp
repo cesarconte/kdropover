@@ -1,7 +1,7 @@
 /*
-    SPDX-FileCopyrightText: 2026 Cesar
-    SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ * SPDX-FileCopyrightText: 2026 Cesar
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
 #include "dropovercontroller.h"
 
@@ -12,6 +12,10 @@
 
 int main(int argc, char *argv[])
 {
+    // Force native Wayland backend with real alpha buffer
+    qputenv("QT_QPA_PLATFORM", "wayland;xcb");
+    QQuickWindow::setDefaultAlphaBuffer(true);
+
     QApplication app(argc, argv);
     app.setApplicationName(QStringLiteral("kdropover"));
     app.setApplicationDisplayName(QStringLiteral("KDropover"));
@@ -26,6 +30,9 @@ int main(int argc, char *argv[])
     }
 
     QQmlApplicationEngine engine;
+    engine.addImportPath(QStringLiteral("/home/cesar/.local/lib/qt6/qml"));
+    engine.addImportPath(QStringLiteral("/home/cesar/Proyectos/cachyos-ui/build/src"));
+
     engine.rootContext()->setContextProperty(QStringLiteral("Dropover"), &controller);
     engine.load(QUrl(QStringLiteral("qrc:/org/cesar/kdropover/qml/main.qml")));
 
