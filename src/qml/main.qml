@@ -13,9 +13,9 @@ import CachyOS.UI
 CachyWindow {
     id: rootWindow
 
-    width: 480
-    height: 600
-    minimumWidth: 440
+    width: 540
+    height: 620
+    minimumWidth: 460
     minimumHeight: 520
     title: "KDropover — Estantería de Archivos"
     showTrafficLights: true
@@ -54,23 +54,20 @@ CachyWindow {
 
                         Text {
                             Layout.fillWidth: true
-                            Layout.minimumWidth: 0
                             text: "Estantería Temporal"
                             font.pixelSize: 15
                             font.bold: true
                             color: CachyTheme.textPrimary
-                            elide: Text.ElideRight
                         }
 
                         Text {
                             Layout.fillWidth: true
-                            Layout.minimumWidth: 0
                             text: Dropover.statusMessage.length > 0
                                 ? Dropover.statusMessage
                                 : "Arrastra y mantén archivos a mano"
                             font.pixelSize: 11
                             color: CachyTheme.textSecondary
-                            elide: Text.ElideRight
+                            wrapMode: Text.WordWrap
                         }
                     }
 
