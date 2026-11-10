@@ -13,10 +13,6 @@ import CachyOS.UI
 CachyWindow {
     id: rootWindow
 
-    width: 540
-    height: 620
-    minimumWidth: 460
-    minimumHeight: 520
     title: "KDropover — Estantería de Archivos"
     showTrafficLights: true
 
@@ -34,8 +30,8 @@ CachyWindow {
 
             ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: 18
-                spacing: 14
+                anchors.margins: CachyTheme.marginWindow
+                spacing: CachyTheme.spacingMedium
 
                 // Header Info Bar
                 RowLayout {
