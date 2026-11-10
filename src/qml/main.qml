@@ -87,6 +87,13 @@ CachyWindow {
                     contentItem: Item {
                         anchors.fill: parent
 
+                        MouseArea {
+                            anchors.fill: parent
+                            enabled: Dropover.count === 0
+                            cursorShape: Dropover.count === 0 ? Qt.PointingHandCursor : Qt.ArrowCursor
+                            onClicked: Dropover.openNativeFileDialog()
+                        }
+
                         // Empty State View
                         ColumnLayout {
                             anchors.centerIn: parent
@@ -112,12 +119,6 @@ CachyWindow {
                                 font.pixelSize: 11
                                 color: CachyTheme.textSecondary
                                 Layout.alignment: Qt.AlignHCenter
-                            }
-
-                            MouseArea {
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                onClicked: Dropover.openNativeFileDialog()
                             }
                         }
 
