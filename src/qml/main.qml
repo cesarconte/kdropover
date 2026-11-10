@@ -30,8 +30,8 @@ CachyWindow {
 
             ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: CachyTheme.marginWindow
-                spacing: CachyTheme.spacingMedium
+                anchors.margins: 18
+                spacing: 14
 
                 // Header Info Bar
                 RowLayout {
