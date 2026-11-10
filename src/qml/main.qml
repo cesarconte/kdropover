@@ -15,6 +15,8 @@ CachyWindow {
 
     width: 480
     height: 600
+    minimumWidth: 440
+    minimumHeight: 520
     title: "KDropover — Estantería de Archivos"
     showTrafficLights: true
 
@@ -47,16 +49,22 @@ CachyWindow {
 
                     ColumnLayout {
                         Layout.fillWidth: true
+                        Layout.minimumWidth: 0
                         spacing: 2
 
                         Text {
+                            Layout.fillWidth: true
+                            Layout.minimumWidth: 0
                             text: "Estantería Temporal"
                             font.pixelSize: 15
                             font.bold: true
                             color: CachyTheme.textPrimary
+                            elide: Text.ElideRight
                         }
 
                         Text {
+                            Layout.fillWidth: true
+                            Layout.minimumWidth: 0
                             text: Dropover.statusMessage.length > 0
                                 ? Dropover.statusMessage
                                 : "Arrastra y mantén archivos a mano"
@@ -156,6 +164,7 @@ CachyWindow {
 
                                     Text {
                                         Layout.fillWidth: true
+                                        Layout.minimumWidth: 0
                                         text: fileRow.modelData.name + " (" + fileRow.modelData.sizeText + ")"
                                         color: CachyTheme.textPrimary
                                         elide: Text.ElideMiddle
@@ -211,6 +220,7 @@ CachyWindow {
 
                     CachyButton {
                         Layout.fillWidth: true
+                        Layout.minimumWidth: 0
                         text: "Copiar todos"
                         enabled: Dropover.count > 0
                         onClicked: Dropover.copyAllPathsToClipboard()
@@ -218,6 +228,7 @@ CachyWindow {
 
                     CachyButton {
                         Layout.fillWidth: true
+                        Layout.minimumWidth: 0
                         text: "Crear ZIP"
                         primary: true
                         enabled: Dropover.count > 0
@@ -226,6 +237,7 @@ CachyWindow {
 
                     CachyButton {
                         Layout.fillWidth: true
+                        Layout.minimumWidth: 0
                         text: "Enviar a Kity"
                         enabled: Dropover.count > 0
                         onClicked: Dropover.exportShelfToKiriKnowledge()
@@ -242,6 +254,7 @@ CachyWindow {
 
                         Text {
                             Layout.fillWidth: true
+                            Layout.minimumWidth: 0
                             text: Dropover.quickLookTitle.length > 0
                                 ? ("👁️ " + Dropover.quickLookTitle)
                                 : "👁️ Vista Previa & Resumen IA (Selecciona un archivo)"
