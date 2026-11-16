@@ -41,7 +41,8 @@ public:
     Q_INVOKABLE void removeAt(int index);
     Q_INVOKABLE void clearShelf();
     Q_INVOKABLE void copyAllPathsToClipboard();
-    Q_INVOKABLE void exportShelfToKiriKnowledge();
+    Q_INVOKABLE void exportShelfToKityKnowledge();
+    Q_INVOKABLE void exportShelfToKiriKnowledge() { exportShelfToKityKnowledge(); }
     Q_INVOKABLE void createZipInDownloads();
     Q_INVOKABLE void inspectFileQuickLook(const QString &path);
     Q_INVOKABLE void summarizeFileWithAi(const QString &path);

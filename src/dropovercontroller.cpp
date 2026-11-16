@@ -204,11 +204,11 @@ void DropoverController::copyAllPathsToClipboard()
     }
 }
 
-void DropoverController::exportShelfToKiriKnowledge()
+void DropoverController::exportShelfToKityKnowledge()
 {
     if (m_shelfFiles.isEmpty()) return;
 
-    const QString kbDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/kiri/knowledge");
+    const QString kbDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/kity/knowledge");
     QDir().mkpath(kbDir);
 
     int copied = 0;
@@ -223,7 +223,7 @@ void DropoverController::exportShelfToKiriKnowledge()
             }
         }
     }
-    setStatus(QStringLiteral("Exportados %1 archivo(s) a Kiri RAG (~/.local/share/kiri/knowledge)").arg(copied));
+    setStatus(QStringLiteral("Exportados %1 archivo(s) a Kity RAG (~/.local/share/kity/knowledge)").arg(copied));
 }
 
 void DropoverController::createZipInDownloads()

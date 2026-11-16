@@ -233,7 +233,7 @@ CachyWindow {
                         Layout.minimumWidth: 0
                         text: "Enviar a Kity"
                         enabled: Dropover.count > 0
-                        onClicked: Dropover.exportShelfToKiriKnowledge()
+                        onClicked: Dropover.exportShelfToKityKnowledge()
                     }
                 }
 
