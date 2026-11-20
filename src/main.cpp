@@ -5,6 +5,7 @@
 
 #include "dropovercontroller.h"
 
+#include <KLocalizedString>
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -17,6 +18,7 @@ int main(int argc, char *argv[])
     QQuickWindow::setDefaultAlphaBuffer(true);
 
     QApplication app(argc, argv);
+    KLocalizedString::setApplicationDomain("kdropover");
     app.setApplicationName(QStringLiteral("kdropover"));
     app.setApplicationDisplayName(QStringLiteral("KDropover"));
     app.setOrganizationDomain(QStringLiteral("cesar.org"));
@@ -30,8 +32,7 @@ int main(int argc, char *argv[])
     }
 
     QQmlApplicationEngine engine;
-    engine.addImportPath(QStringLiteral("/home/cesar/.local/lib/qt6/qml"));
-    engine.addImportPath(QStringLiteral("/home/cesar/Proyectos/cachyos-ui/build/src"));
+    engine.addImportPath(QStringLiteral("/usr/lib/qt6/qml"));
 
     engine.rootContext()->setContextProperty(QStringLiteral("Dropover"), &controller);
     engine.load(QUrl(QStringLiteral("qrc:/org/cesar/kdropover/qml/main.qml")));

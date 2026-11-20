@@ -54,8 +54,7 @@ private Q_SLOTS:
     void testDropoverQmlSyntax()
     {
         QQmlEngine engine;
-        engine.addImportPath(QStringLiteral("/home/cesar/.local/lib/qt6/qml"));
-        engine.addImportPath(QStringLiteral("/home/cesar/Proyectos/cachyos-ui/build/src"));
+        engine.addImportPath(QStringLiteral("/usr/lib/qt6/qml"));
         const QString qmlPath = QStringLiteral(KDROPOVER_SOURCE_DIR) + QStringLiteral("/src/qml/main.qml");
         QVERIFY(QFile::exists(qmlPath));
         QQmlComponent comp(&engine, QUrl::fromLocalFile(qmlPath));

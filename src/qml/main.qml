@@ -13,8 +13,16 @@ import CachyOS.UI
 CachyWindow {
     id: rootWindow
 
-    title: "KDropover — Estantería de Archivos"
+    title: CachyI18n.i18n("KDropover — Estantería de Archivos")
+    width: 520
+    height: 580
+    minimumWidth: 440
+    minimumHeight: 460
+
     showTrafficLights: true
+    showTitleBarDivider: true
+    showWindowFrame: true
+    cornerRadius: CachyTheme.radiusWindow
 
     contentData: [
         DropArea {
@@ -38,9 +46,10 @@ CachyWindow {
                     Layout.fillWidth: true
                     spacing: 10
 
-                    Text {
-                        text: "📦"
-                        font.pixelSize: 18
+                    CachyIcon {
+                        name: "archive-insert"
+                        size: 22
+                        color: CachyTheme.accentColor
                     }
 
                     ColumnLayout {
@@ -50,7 +59,7 @@ CachyWindow {
 
                         Text {
                             Layout.fillWidth: true
-                            text: "Estantería Temporal"
+                            text: CachyI18n.i18n("Estantería Temporal")
                             font.pixelSize: 15
                             font.bold: true
                             color: CachyTheme.textPrimary
@@ -60,7 +69,7 @@ CachyWindow {
                             Layout.fillWidth: true
                             text: Dropover.statusMessage.length > 0
                                 ? Dropover.statusMessage
-                                : "Arrastra y mantén archivos a mano"
+                                : CachyI18n.i18n("Arrastra y mantén archivos a mano")
                             font.pixelSize: 11
                             color: CachyTheme.textSecondary
                             wrapMode: Text.WordWrap
@@ -68,12 +77,14 @@ CachyWindow {
                     }
 
                     CachyButton {
-                        text: "Añadir"
+                        iconName: "list-add"
+                        text: CachyI18n.i18n("Añadir")
                         onClicked: Dropover.openNativeFileDialog()
                     }
 
                     CachyButton {
-                        text: "Vaciar"
+                        iconName: "edit-clear"
+                        text: CachyI18n.i18n("Vaciar")
                         destructive: true
                         enabled: Dropover.count > 0
                         onClicked: Dropover.clearShelf()
@@ -101,14 +112,15 @@ CachyWindow {
                             visible: Dropover.count === 0
                             spacing: 8
 
-                            Text {
-                                text: "📥"
-                                font.pixelSize: 32
+                            CachyIcon {
+                                name: "folder-download"
+                                size: 40
+                                color: CachyTheme.accentColor
                                 Layout.alignment: Qt.AlignHCenter
                             }
 
                             Text {
-                                text: "Suelta aquí archivos para la estantería"
+                                text: CachyI18n.i18n("Suelta aquí archivos para la estantería")
                                 font.pixelSize: 13
                                 font.weight: Font.DemiBold
                                 color: CachyTheme.textPrimary
@@ -116,7 +128,7 @@ CachyWindow {
                             }
 
                             Text {
-                                text: "o haz clic aquí para seleccionar"
+                                text: CachyI18n.i18n("o haz clic aquí para seleccionar")
                                 font.pixelSize: 11
                                 color: CachyTheme.textSecondary
                                 Layout.alignment: Qt.AlignHCenter
@@ -150,9 +162,12 @@ CachyWindow {
                                     anchors.rightMargin: 10
                                     spacing: 8
 
-                                    Text {
-                                        text: "📄"
-                                        font.pixelSize: 15
+                                    CachyIcon {
+                                        name: fileRow.modelData.iconName && fileRow.modelData.iconName.length > 0
+                                            ? fileRow.modelData.iconName
+                                            : "application-octet-stream"
+                                        size: 18
+                                        colored: false
                                     }
 
                                     Text {
@@ -165,39 +180,38 @@ CachyWindow {
                                     }
 
                                     // Quick Look preview
-                                    CachyButton {
-                                        text: "👁️"
-                                        flat: true
-                                        implicitWidth: 32
+                                    CachyToolbarButton {
+                                        iconName: "view-preview"
+                                        implicitWidth: 26
                                         implicitHeight: 26
+                                        tooltipText: CachyI18n.i18n("Vista previa rápida")
                                         onClicked: Dropover.inspectFileQuickLook(fileRow.modelData.path)
                                     }
 
                                     // AI Summarize
-                                    CachyButton {
-                                        text: "✨"
-                                        flat: true
-                                        implicitWidth: 32
+                                    CachyToolbarButton {
+                                        iconName: "kity-symbolic"
+                                        implicitWidth: 26
                                         implicitHeight: 26
+                                        tooltipText: CachyI18n.i18n("Resumen IA con Kity")
                                         onClicked: Dropover.summarizeFileWithAi(fileRow.modelData.path)
                                     }
 
                                     // Open file
-                                    CachyButton {
-                                        text: "↗"
-                                        flat: true
-                                        implicitWidth: 32
+                                    CachyToolbarButton {
+                                        iconName: "document-open"
+                                        implicitWidth: 26
                                         implicitHeight: 26
+                                        tooltipText: CachyI18n.i18n("Abrir externamente")
                                         onClicked: Dropover.openFileExternally(fileRow.modelData.path)
                                     }
 
                                     // Delete from shelf
-                                    CachyButton {
-                                        text: "✕"
-                                        flat: true
-                                        destructive: true
+                                    CachyToolbarButton {
+                                        iconName: "edit-delete"
                                         implicitWidth: 26
                                         implicitHeight: 26
+                                        tooltipText: CachyI18n.i18n("Quitar de la estantería")
                                         onClicked: Dropover.removeAt(fileRow.index)
                                     }
                                 }
@@ -214,7 +228,8 @@ CachyWindow {
                     CachyButton {
                         Layout.fillWidth: true
                         Layout.minimumWidth: 0
-                        text: "Copiar todos"
+                        iconName: "edit-copy"
+                        text: CachyI18n.i18n("Copiar todos")
                         enabled: Dropover.count > 0
                         onClicked: Dropover.copyAllPathsToClipboard()
                     }
@@ -222,7 +237,8 @@ CachyWindow {
                     CachyButton {
                         Layout.fillWidth: true
                         Layout.minimumWidth: 0
-                        text: "Crear ZIP"
+                        iconName: "archive-insert"
+                        text: CachyI18n.i18n("Crear ZIP")
                         primary: true
                         enabled: Dropover.count > 0
                         onClicked: Dropover.createZipInDownloads()
@@ -231,7 +247,8 @@ CachyWindow {
                     CachyButton {
                         Layout.fillWidth: true
                         Layout.minimumWidth: 0
-                        text: "Enviar a Kity"
+                        iconName: "kity-symbolic"
+                        text: CachyI18n.i18n("Enviar a Kity")
                         enabled: Dropover.count > 0
                         onClicked: Dropover.exportShelfToKityKnowledge()
                     }
@@ -245,16 +262,27 @@ CachyWindow {
                     contentItem: ColumnLayout {
                         spacing: 8
 
-                        Text {
+                        RowLayout {
                             Layout.fillWidth: true
-                            Layout.minimumWidth: 0
-                            text: Dropover.quickLookTitle.length > 0
-                                ? ("👁️ " + Dropover.quickLookTitle)
-                                : "👁️ Vista Previa & Resumen IA (Selecciona un archivo)"
-                            font.pixelSize: 12
-                            font.weight: Font.DemiBold
-                            color: CachyTheme.accentColor
-                            elide: Text.ElideRight
+                            spacing: 6
+
+                            CachyIcon {
+                                name: Dropover.aiSummary.length > 0 ? "kity-symbolic" : "view-preview"
+                                size: 14
+                                color: CachyTheme.accentColor
+                            }
+
+                            Text {
+                                Layout.fillWidth: true
+                                Layout.minimumWidth: 0
+                                text: Dropover.quickLookTitle.length > 0
+                                    ? Dropover.quickLookTitle
+                                    : CachyI18n.i18n("Vista Previa & Resumen IA (Selecciona un archivo)")
+                                font.pixelSize: 12
+                                font.weight: Font.DemiBold
+                                color: CachyTheme.accentColor
+                                elide: Text.ElideRight
+                            }
                         }
 
                         CachyDivider {
@@ -277,8 +305,10 @@ CachyWindow {
                                 color: CachyTheme.textPrimary
                                 font.pixelSize: 12
                                 text: Dropover.aiSummary.length > 0
-                                    ? ("✨ RESUMEN IA:\n" + Dropover.aiSummary + "\n\n─── VISTA PREVIA ───\n" + Dropover.quickLookPreview)
-                                    : (Dropover.quickLookPreview.length > 0 ? Dropover.quickLookPreview : "Arrastra archivos a la estantería para previsualizarlos o generar resúmenes con IA.")
+                                    ? (CachyI18n.i18n("RESUMEN IA (Kity / Ollama):\n") + Dropover.aiSummary + "\n\n─── VISTA PREVIA ───\n" + Dropover.quickLookPreview)
+                                    : (Dropover.quickLookPreview.length > 0
+                                        ? Dropover.quickLookPreview
+                                        : CachyI18n.i18n("Arrastra archivos a la estantería para previsualizarlos o generar resúmenes con IA."))
                             }
                         }
                     }
