@@ -223,7 +223,7 @@ void DropoverController::exportShelfToKityKnowledge()
             }
         }
     }
-    setStatus(QStringLiteral("Exportados %1 archivo(s) a Kity RAG (~/.local/share/kity/knowledge)").arg(copied));
+    setStatus(QStringLiteral("Exportados %1 archivo(s) a la base de conocimiento de Kity").arg(copied));
 }
 
 void DropoverController::createZipInDownloads()
